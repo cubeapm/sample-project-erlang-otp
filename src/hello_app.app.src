@@ -6,18 +6,6 @@
   {applications, [
     kernel,
     stdlib,
-    sasl,
-    inets,
-    otel_http,
-    tls_certificate_check,
-    telemetry,
-    cowboy_telemetry,
-    opentelemetry_api,
-    opentelemetry_semantic_conventions,
-    opentelemetry_telemetry,
-    opentelemetry,
-    opentelemetry_exporter,
-    opentelemetry_cowboy,
     cowboy
   ]},
   {env, []},
