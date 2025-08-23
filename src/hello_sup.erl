@@ -17,7 +17,8 @@ init([]) ->
   ]),
 
   CowboyOpts = #{
-    env => #{dispatch => Dispatch}
+    env => #{dispatch => Dispatch},
+    stream_handlers => [cowboy_telemetry_h, cowboy_stream_h]
   },
 
   CowboySpec = #{
