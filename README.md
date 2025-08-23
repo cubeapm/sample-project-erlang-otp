@@ -7,7 +7,7 @@ The code is organized into multiple branches. The main branch has the Erlang app
 | Branch                                                                         | Instrumentation | Code changes for instrumentation                                                                |
 | ------------------------------------------------------------------------------ | --------------- | ----------------------------------------------------------------------------------------------- |
 | [main](https://github.com/cubeapm/erlang-docker/tree/main)                    | None            | -                                                                                               |
-| [otel](https://github.com/cubeapm/erlang-docker/tree/otel)                    | OpenTelemetry   | [main...otel](https://github.com/cubeapm/erlang-docker/compare/main...otel)                    |
+| [otel](https://github.com/cubeapm/erlang-docker/tree/otel)                    | OpenTelemetry   | [main...otel](https://github.com/cubeapm/sample-project-erlang-otp/compare/main...otel)                    |
 
 ## Setup
 
