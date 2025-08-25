@@ -6,8 +6,8 @@ The code is organized into multiple branches. The main branch has the Erlang app
 
 | Branch                                                                         | Instrumentation | Code changes for instrumentation                                                                |
 | ------------------------------------------------------------------------------ | --------------- | ----------------------------------------------------------------------------------------------- |
-| [main](https://github.com/cubeapm/erlang-docker/tree/main)                    | None            | -                                                                                               |
-| [otel](https://github.com/cubeapm/erlang-docker/tree/otel)                    | OpenTelemetry   | [main...otel](https://github.com/cubeapm/erlang-docker/compare/main...otel)                    |
+| [main](https://github.com/cubeapm/sample-project-erlang-otp/tree/main)                    | None            | -                                                                                               |
+| [otel](https://github.com/cubeapm/sample-project-erlang-otp/tree/otel)                    | OpenTelemetry   | [main...otel](https://github.com/cubeapm/erlang-docker/compare/main...otel)                    |
 
 ## Setup
 
@@ -36,12 +36,6 @@ The application is configured via `config/sys.config`. Key configurations includ
 - OpenTelemetry configuration with OTLP exporter
 - Service name and version
 
-
-### Main Branch
-- Basic Erlang/Cowboy development
-- Simple HTTP endpoint modifications
-
-### OTEL Branch
 To modify the OpenTelemetry configuration, edit `config/sys.config`. The main settings you might want to change are:
 - `otlp_endpoint` - Where to send telemetry data
 - `service.name` and `service.version` - Identify your service
