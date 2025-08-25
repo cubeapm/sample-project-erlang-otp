@@ -11,7 +11,6 @@ RUN rebar3 get-deps
 
 # Copy source code
 COPY src/ ./src/
-COPY config/ ./config/
 
 # Compile the application and build release
 RUN rebar3 release
