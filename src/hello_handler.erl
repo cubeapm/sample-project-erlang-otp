@@ -23,18 +23,20 @@ init(Req, State) ->
   end.
 
 handle_default(Req, State) ->
-  ?with_span(spantest, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
-  ?set_attributes([{'my-attribute', <<"my-value">>},
-                                {another_attribute, <<"value-of-attribute">>}]),
-  ?set_status(?OTEL_STATUS_ERROR, <<"this is not ok">>),
-  Response = cowboy_req:reply(
-    200,
-    #{<<"content-type">> => <<"text/plain">>},
-    <<"Hello from OTP24 Cowboy!">>,
-    Req
-  ),
-  {ok, Response, State}
-  end).
+  Method = cowboy_req:method(Req),
+  Path = cowboy_req:path(Req),
+  SpanName = <<Method/binary, " ", Path/binary>>,
+  ?with_span(SpanName, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
+    ?set_attributes([{?HTTP_METHOD, Method},{?HTTP_ROUTE, Path}]),
+    ?set_status(?OTEL_STATUS_ERROR, <<"this is not ok">>),
+    Response = cowboy_req:reply(
+      200,
+       #{<<"content-type">> => <<"text/plain">>},
+       <<"Hello from OTP24 Cowboy!">>,
+       Req
+     ),
+     {ok, Response, State}
+      end).
 handle_param(Req, State) ->
   Id = cowboy_req:binding(id, Req),
   logger:info("Parameter received: ~s", [Id]),
