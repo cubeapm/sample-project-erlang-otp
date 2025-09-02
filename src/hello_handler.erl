@@ -1,6 +1,12 @@
 -module(hello_handler).
 -export([init/2]).
 
+-include_lib("opentelemetry_api/include/opentelemetry.hrl").
+-include_lib("opentelemetry_api/include/otel_tracer.hrl").
+-include_lib("opentelemetry_semantic_conventions/include/trace.hrl").
+
+-define(TRACER_ID, ?MODULE).
+
 init(Req, State) ->
   Method = cowboy_req:method(Req),
   Path = cowboy_req:path(Req),
@@ -17,13 +23,18 @@ init(Req, State) ->
   end.
 
 handle_default(Req, State) ->
+  ?with_span(spantest, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
+  ?set_attributes([{'my-attribute', <<"my-value">>},
+                                {another_attribute, <<"value-of-attribute">>}]),
+  ?set_status(?OTEL_STATUS_ERROR, <<"this is not ok">>),
   Response = cowboy_req:reply(
     200,
     #{<<"content-type">> => <<"text/plain">>},
     <<"Hello from OTP24 Cowboy!">>,
     Req
   ),
-  {ok, Response, State}.
+  {ok, Response, State}
+  end).
 handle_param(Req, State) ->
   Id = cowboy_req:binding(id, Req),
   logger:info("Parameter received: ~s", [Id]),
