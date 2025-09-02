@@ -25,6 +25,7 @@ init(Req, State) ->
 handle_default(Req, State) ->
   Method = cowboy_req:method(Req),
   Path = cowboy_req:path(Req),
+  % {MatchPath, Req2} = cowboy_req:match_path(Req),
   SpanName = <<Method/binary, " ", Path/binary>>,
   ?with_span(SpanName, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
     ?set_attributes([{?HTTP_METHOD, Method},{?HTTP_ROUTE, Path}]),
