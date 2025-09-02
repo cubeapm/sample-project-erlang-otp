@@ -25,11 +25,11 @@ init(Req, State) ->
 handle_default(Req, State) ->
   Method = cowboy_req:method(Req),
   Path = cowboy_req:path(Req),
-  % {MatchPath, Req2} = cowboy_req:match_path(Req),
-  SpanName = <<Method/binary, " ", Path/binary>>,
+  % Do not set path in Route. It needs to set to regex like in handler
+  Route = <<"/">>,
+  SpanName = <<Method/binary, " ", Route/binary>>,
   ?with_span(SpanName, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
     ?set_attributes([{?HTTP_METHOD, Method},{?HTTP_ROUTE, Path}]),
-    ?set_status(?OTEL_STATUS_ERROR, <<"this is not ok">>),
     Response = cowboy_req:reply(
       200,
        #{<<"content-type">> => <<"text/plain">>},
@@ -41,7 +41,13 @@ handle_default(Req, State) ->
 handle_param(Req, State) ->
   Id = cowboy_req:binding(id, Req),
   logger:info("Parameter received: ~s", [Id]),
-  
+  Method = cowboy_req:method(Req),
+  Path = cowboy_req:path(Req),
+  % Do not set path in Route. It needs to set to regex like in handler
+  Route = <<"/param/{paramName}">>,
+  SpanName = <<Method/binary, " ", Route/binary>>,
+  ?with_span(SpanName, #{attributes => [{?HTTP_SCHEME, <<"https">>}], kind => ?SPAN_KIND_SERVER}, fun(_) ->
+    ?set_attributes([{?HTTP_METHOD, Method},{?HTTP_ROUTE, Path}]),
   Response = iolist_to_binary(["Parameter logged: ", Id]),
   Req2 = cowboy_req:reply(
     200,
@@ -49,7 +55,8 @@ handle_param(Req, State) ->
     Response,
     Req
   ),
-  {ok, Req2, State}.
+  {ok, Req2, State}
+  end).
 
   handle_exception(_Req, _State) ->
   try 
