@@ -12,7 +12,8 @@ init([]) ->
     {'_', [
       {"/", hello_handler, []},
       {"/param/:id", hello_handler, [{action, param}]},
-      {"/exception", hello_handler, [{action, exception}]}
+      {"/exception", hello_handler, [{action, exception}]},
+      {"/external", hello_handler, [{action, external}]}
     ]}
   ]),
 
